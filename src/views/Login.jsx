@@ -1,25 +1,25 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
-
 function Login({ getProducts }) {
-  
   const {
-    register, 
+    register,
     handleSubmit,
-    formState: {errors, isValid}, }= useForm({
-      mode:"onChange",
-      defaultValues: {
-        username: "hkuodesign@gmail.com",
-        password: "",
-      }
-    })
-  
-  
-  
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      username: "hkuodesign@gmail.com",
+      password: "",
+    },
+  });
+
+  const navigate = useNavigate();
+
   // const [formData, setFormData] = useState({
   //   username: "",
   //   password: "",
@@ -43,8 +43,8 @@ function Login({ getProducts }) {
       document.cookie = `hexToken=${token};expires=${new Date(expired)};`;
       axios.defaults.headers.common["Authorization"] = token;
       //登入成功後，請將Token設定到axios的預設Header, 之後所有的API都會自動帶上Token
-      getProducts();
-
+      // getProducts();
+      navigate("/admin/products");
     } catch (error) {
       console.log(error.response);
     }
@@ -74,7 +74,9 @@ function Login({ getProducts }) {
             // value={formData.username}
             // onChange={(e) => handleInputChange(e)}
           />
-          <small className="text-danger">{errors.username && errors.username.message}</small>
+          <small className="text-danger">
+            {errors.username && errors.username.message}
+          </small>
           <label htmlFor="username">Email address</label>
         </div>
         <div className="form-floating">
@@ -93,7 +95,9 @@ function Login({ getProducts }) {
             // value={formData.password}
             // onChange={(e) => handleInputChange(e)}
           />
-          <small className="text-danger">{errors.password && errors.password.message}</small>
+          <small className="text-danger">
+            {errors.password && errors.password.message}
+          </small>
 
           <label htmlFor="password">Password</label>
         </div>
